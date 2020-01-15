@@ -81,11 +81,9 @@ plt.ylabel('Exam 2 score')
 
 #  Predict probability for a student with score 45 on exam 1
 #  and score 85 on exam 2
-
-X1=np.asarray([1,45,85])
+X1=np.array([1,45,85])
 pred,prob = predict(theta,X1)
 print('For a student with scores 45 and 85, we predict an admission probability of %f' % prob)
 # Compute accuracy on our training set
 preds,probs = predict(theta, X)
-y=(np.asarray(y)).reshape(-1,1)
 print(np.mean(preds==y)*100)
