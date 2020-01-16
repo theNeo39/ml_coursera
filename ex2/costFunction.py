@@ -16,5 +16,4 @@ def costFunction(theta, X,y):
     t3=np.subtract(t1,t2)
     J=(np.sum(t3))/m
     grad=gradientFunction(theta,X,y)
-    
     return J,grad

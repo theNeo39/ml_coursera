@@ -22,8 +22,8 @@ from predict import predict
 #     sigmoid.py done
 #     costFunction.py done
 #     gradientFunction.py done
-#     predict.py
-#     costFunctionReg.py
+#     predict.py done
+#     costFunctionReg.py done
 #     gradientFunctionReg.py
 #     n.b. This files differ in number from the Octave version of ex2.
 #          This is due to the scipy optimization taking only scalar
@@ -51,7 +51,7 @@ m, n = X.shape
 X = np.concatenate((np.ones(m).reshape(-1,1), X), axis=1)
 # Initialize fitting parameters
 initial_theta =np.zeros(n+1)
-initial_theta=(np.asarray([-24,0.2,0.2])).T
+#initial_theta=(np.asarray([-24,0.2,0.2])).T
 temp=(np.dot(initial_theta.T,X.T)).T
 g=sigmoid(temp)
 

@@ -14,18 +14,6 @@ def gradientFunction(theta, X, y):
     grad=np.zeros(theta.size)
     tx=(np.dot(theta.T,X.T)).T
     cost=np.subtract(sigmoid(tx),y)
-    grad[0]=np.sum(cost*X[:,0])/m
-    grad[1]=np.sum(cost*X[:,1])/m
-    grad[2]=np.sum(cost*X[:,2])/m
-    
-    
-   
-# ====================== YOUR CODE HERE ======================
-# Instructions: Compute the gradient of a particular choice of theta.
-#               Compute the partial derivatives and set grad to the partial
-#               derivatives of the cost w.r.t. each parameter in theta
-
-
-# =============================================================
-
+    for i in range(theta.size):
+        grad[i]=np.sum(cost*X[:,i])/m
     return grad
