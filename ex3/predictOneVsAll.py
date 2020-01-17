@@ -37,4 +37,4 @@ def predictOneVsAll(all_theta, X):
 
 # =========================================================================
 
-    return p
+    return p+1 #as we have y from 1 to 10

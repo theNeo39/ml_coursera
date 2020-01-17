@@ -13,9 +13,9 @@ from oneVsAll import oneVsAll
 #  in this exericse:
 #
 #     lrCostFunction.m (logistic regression cost function) done
-#     oneVsAll.m
-#     predictOneVsAll.m
-#     predict.m
+#     oneVsAll.m done
+#     predictOneVsAll.m done
+#     predict.m done
 #
 #  For this exercise, you will not need to change any code in this file,
 #  or any other files other than those mentioned above.
@@ -41,9 +41,8 @@ m= y.size
 
 # Randomly select 100 data points to display
 rand_indices = np.random.permutation(range(100))
-sel = X[rand_indices,:]
-
-#displayData(sel)
+sel = sel[0:100]
+displayData(X[sel,:])
 
 ## ============ Part 2: Vectorize Logistic Regression ============
 #  In this part of the exercise, you will reuse your logistic regression

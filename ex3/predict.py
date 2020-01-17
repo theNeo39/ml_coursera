@@ -1,6 +1,5 @@
 import numpy as np
-
-from ex2.sigmoid import sigmoid
+from sigmoid import sigmoid
 
 def predict(Theta1, Theta2, X):
     """ outputs the predicted label of X given the
@@ -10,6 +9,14 @@ def predict(Theta1, Theta2, X):
 # Useful values
     m, _ = X.shape
     num_labels, _ = Theta2.shape
+    
+    layer1= np.concatenate([np.ones((m, 1)), X], axis=1)
+    z2=np.dot(Theta1,layer1.T).T
+    z2=sigmoid(z2)
+    layer2=np.concatenate([np.ones((z2.shape[0], 1)), z2], axis=1)
+    z3=np.dot(Theta2,layer2.T).T
+    z3=sigmoid(z3)
+    p=np.argmax(z3,axis=1)
 
 # ====================== YOUR CODE HERE ======================
 # Instructions: Complete the following code to make predictions using
