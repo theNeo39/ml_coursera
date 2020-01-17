@@ -16,6 +16,8 @@ def gradientFunctionReg(theta, X, y, Lambda):
     cost=np.subtract(sigmoid(tx),y)
     for i in range(theta.size):
         grad[i]=np.sum(cost*X[:,i])/m
+        print('for theta %d' % i)
+        print('grad is %f'% grad[i])
     th=(Lambda/m)*theta[1:]
     grad[1:]=grad[1:]+th
     return grad

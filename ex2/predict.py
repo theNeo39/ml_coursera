@@ -8,7 +8,6 @@ def predict(theta, X):
     """ computes the predictions for X using a threshold at 0.5
     (i.e., if sigmoid(theta'*x) >= 0.5, predict 1)
     """
-    #p=(np.asarray(np.zeros(X.shape[0]))).reshape(-1,1)
     p=np.zeros(X.shape[0])
     tx=(np.dot(theta.T,X.T)).T
     prob=sigmoid(tx)

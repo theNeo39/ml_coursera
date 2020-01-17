@@ -52,8 +52,8 @@ X = np.concatenate((np.ones(m).reshape(-1,1), X), axis=1)
 # Initialize fitting parameters
 initial_theta =np.zeros(n+1)
 #initial_theta=(np.asarray([-24,0.2,0.2])).T
-temp=(np.dot(initial_theta.T,X.T)).T
-g=sigmoid(temp)
+#temp=(np.dot(initial_theta.T,X.T)).T
+#g=sigmoid(temp)
 
 # Compute and display initial cost and gradient
 cost,grad = costFunction(initial_theta, X, y)
