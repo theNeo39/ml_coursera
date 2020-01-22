@@ -12,15 +12,15 @@ def gradientDescentMulti(X, y, theta, alpha, num_iters):
     # Initialize some useful values
     J_history = []
     m = y.size  # number of training examples
+    
 
     for i in range(num_iters):
         cost=np.subtract(np.dot(theta.T,X.T).T,y)
-        t0=theta[0]-((np.sum(cost)*alpha)/m)
-        t1=theta[1]-((np.sum(cost*X[:,1])*alpha)/m)
-        t2=theta[2]-((np.sum(cost*X[:,2])*alpha)/m)
-        theta[0]=t0
-        theta[1]=t1
-        theta[2]=t2
+        t=np.zeros(X.shape[1])
+        for j in range(X.shape[1]):
+         t[j]=theta[j]-((np.sum(cost*X[:,j])*alpha)/m)
+        for j in range(X.shape[1]):
+         theta[j]=t[j]
         J_history.append(computeCostMulti(X, y, theta))
         print(J_history[i])
 

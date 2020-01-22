@@ -48,11 +48,8 @@ plotData(data)
 # =================== Part 3: Gradient descent ===================
 print('Running Gradient Descent ...')
 m=y.shape
-#X=np.concatenate((np.ones(m).reshape(1,-1),X.to_numpy().reshape(1,-1)),axis=0)
 X=np.concatenate((np.ones(m).reshape(-1,1),X),axis=1)
 theta = np.zeros(2)
-#theta=np.array([-1,2])
-# compute and display initial cost
 J = computeCost(X, y, theta)
 print('cost: %0.4f '% J)
 
