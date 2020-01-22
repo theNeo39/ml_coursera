@@ -1,10 +1,8 @@
-## Machine Learning Online Class - Exercise 3 | Part 1: One-vs-all
 import scipy.io
 import numpy as np
 from displayData import displayData
 from lrCostFunction import lrCostFunction 
 from oneVsAll import oneVsAll
-#from predictOneVsAll import predictOneVsAll
 #  Instructions
 #  ------------
 # 
@@ -22,14 +20,11 @@ from oneVsAll import oneVsAll
 #
 
 ## Setup the parameters you will use for this part of the exercise
-input_layer_size  = 400  # 20x20 Input Images of Digits
-num_labels = 10          # 10 labels, from 1 to 10
-                         # (note that we have mapped "0" to label 10)
-
+input_layer_size  = 400  
+num_labels = 10          
 ## =========== Part 1: Loading and Visualizing Data =============
 #  We start the exercise by first loading and visualizing the dataset. 
 #  You will be working with a dataset that contains handwritten digits.
-#
 
 # Load Training Data
 print('Loading and Visualizing Data ...')
@@ -40,7 +35,7 @@ y = dt['y']
 m= y.size
 
 # Randomly select 100 data points to display
-rand_indices = np.random.permutation(range(100))
+sel = np.random.permutation(range(100))
 sel = sel[0:100]
 displayData(X[sel,:])
 

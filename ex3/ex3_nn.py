@@ -51,24 +51,3 @@ pred = predict(Theta1, Theta2, X)
 pred=(np.asarray(pred)).reshape(-1,1)
 
 print('Training Set Accuracy: %f\n', np.mean(pred==y)*100)
-
-#  To give you an idea of the network's output, you can also run
-#  through the examples one at the a time to see what it is predicting.
-"""
-#  Randomly permute examples
-rp = np.random.permutation(range(m))
-
-plt.figure()
-for i in range(m):
-    # Display
-    X2 = X[rp[i],:]
-    print('Displaying Example Image')
-    X2 = np.matrix(X[rp[i]])
-    displayData(X2)
-
-    pred = predict(Theta1, Theta2, X2.getA())
-    pred = np.squeeze(pred)
-    print('Neural Network Prediction: %d (digit %d)\n' % (pred, np.mod(pred, 10)))
-    
-
-"""
