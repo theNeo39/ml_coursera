@@ -25,24 +25,11 @@ from predict import predict
 #     predict.py done
 #     costFunctionReg.py done
 #     gradientFunctionReg.py
-#     n.b. This files differ in number from the Octave version of ex2.
-#          This is due to the scipy optimization taking only scalar
-#          functions where fmiunc in Octave takes functions returning
-#          multiple values.
-#
-#  For this exercise, you will not need to change any code in this file,
-#  or any other files other than those mentioned above.
-#
-
-#from ml import plotData, plotDecisionBoundary
-# Load Data
-#  The first two columns contains the exam scores and the third column
-#  contains the label.
 
 dt=pd.read_csv('ex2data1.txt',header=None)
 X=dt.iloc[:,0:2]
 y=dt.iloc[:,2]
-#sns.scatterplot(x=X[0],y=X[1],hue=y)
+sns.scatterplot(x=X[0],y=X[1],hue=y)
 
 # # ============ Part 2: Compute Cost and Gradient ============
 # #  Setup the data matrix appropriately, and add ones for the intercept term
@@ -51,10 +38,6 @@ m, n = X.shape
 X = np.concatenate((np.ones(m).reshape(-1,1), X), axis=1)
 # Initialize fitting parameters
 initial_theta =np.zeros(n+1)
-#initial_theta=(np.asarray([-24,0.2,0.2])).T
-#temp=(np.dot(initial_theta.T,X.T)).T
-#g=sigmoid(temp)
-
 # Compute and display initial cost and gradient
 cost,grad = costFunction(initial_theta, X, y)
 print('Cost at initial theta (zeros): %f' % cost)

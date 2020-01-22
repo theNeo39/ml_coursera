@@ -19,11 +19,6 @@ def plotBoundary(theta, X, y):
 
 
 # Initialization
-
-# Load Data
-#  The first two columns contains the X values and the third column
-#  contains the label (y).
-
 dt =pd.read_csv('ex2data2.txt', header=None)
 X=dt.iloc[:,0:2]
 y=dt.iloc[:,2]
@@ -34,11 +29,6 @@ plt.xlabel('Microchip Test 1')
 plt.ylabel('Microchip Test 2')
 
 # =========== Part 1: Regularized Logistic Regression ============
-
-# Add Polynomial Features
-
-# Note that mapFeature also adds a column of ones for us, so the intercept
-# term is handled
 X=np.asarray(X)
 X=mapFeature(X[:, 0], X[:, 1])
 # Initialize fitting parameters
