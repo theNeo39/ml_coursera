@@ -1,5 +1,4 @@
 import numpy as np
-
 from debugInitializeWeights import debugInitializeWeights
 from computeNumericalGradient import computeNumericalGradient
 from nnCostFunction import nnCostFunction

@@ -62,15 +62,6 @@ def nnCostFunction(nn_params, input_layer_size, hidden_layer_size, num_labels, X
     Theta1_grad[:,1:]=Theta1_grad[:,1:] +(Lambda/m)*Theta1[:,1:]
     Theta2_grad[:,1:]=Theta2_grad[:,1:] +(Lambda/m)*Theta2[:,1:]
     
-    
-    
-    
-
-
-    # -------------------------------------------------------------
-
-    # =========================================================================
-
     # Unroll gradient
     grad = np.concatenate([Theta1_grad.ravel(), Theta2_grad.ravel()])
     return J,grad

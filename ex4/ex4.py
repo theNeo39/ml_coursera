@@ -1,3 +1,12 @@
+import numpy as np
+import scipy.io
+from scipy import optimize
+from displayData import displayData
+from nnCostFunction import nnCostFunction
+from sigmoidGradient import sigmoidGradient
+from randInitializeWeights import randInitializeWeights
+from checkNNGradients import checkNNGradients
+from prediction import prediction
 ## Machine Learning Online Class - Exercise 4 Neural Network Learning
 
 #  Instructions
@@ -10,19 +19,7 @@
 #     sigmoidGradient.m
 #     randInitializeWeights.m
 #     nnCostFunction.m
-#
-#  For this exercise, you will not need to change any code in this file,
-#  or any other files other than those mentioned above.
-#
-import numpy as np
-import scipy.io
-from scipy import optimize
-from displayData import displayData
-from nnCostFunction import nnCostFunction
-from sigmoidGradient import sigmoidGradient
-from randInitializeWeights import randInitializeWeights
-from checkNNGradients import checkNNGradients
-from predict import predict
+
 ## Setup the parameters you will use for this exercise
 input_layer_size  = 400  # 20x20 Input Images of Digits
 hidden_layer_size = 25   # 25 hidden units
@@ -86,15 +83,11 @@ J, grad = nnCostFunction(nn_params, input_layer_size, hidden_layer_size,
 
 print('Cost at parameters (loaded from ex4weights): %f \n(this value should be about 0.287629)\n' % J)
 ## =============== Part 4: Implement Regularization ===============
-#  Once your cost function implementation is correct, you should now
-#  continue to implement the regularization with the cost.
-#
 
 print('Checking Cost Function (w/ Regularization) ...')
 
 # Weight regularization parameter (we set this to 1 here).
 Lambda = 1
-
 J, _ = nnCostFunction(nn_params, input_layer_size, hidden_layer_size, num_labels, X, y, Lambda)
 
 print('Cost at parameters (loaded from ex4weights): %f \n(this value should be about 0.383770)' % J)
@@ -119,7 +112,7 @@ initial_Theta1 = randInitializeWeights(input_layer_size, hidden_layer_size)
 initial_Theta2 = randInitializeWeights(hidden_layer_size, num_labels)
 
 # Unroll parameters
-initial_nn_params = np.concatenate([initial_Theta1.ravel(), initial_Theta2.ravel()],axis=0)
+initial_nn_params = np.concatenate([initial_Theta1.ravel(), initial_Theta2.ravel()])
 
 ## =============== Part 7: Implement Backpropagation ===============
 #  Once your cost matches up with ours, you should proceed to implement the
@@ -142,7 +135,7 @@ print('Checking Backpropagation (w/ Regularization) ... ')
 
 #  Check gradients by running checkNNGradients
 Lambda = 3.0
-#checkNNGradients(nnCostFunction,Lambda)
+checkNNGradients(nnCostFunction,Lambda)
 
 # Also output the costFunction debugging values
 debug_J, _ = nnCostFunction(nn_params, input_layer_size, hidden_layer_size, num_labels, X, y, Lambda)
@@ -166,8 +159,6 @@ options ={'maxiter': 100}
 Lambda = 1
 
 costFunc = lambda p: nnCostFunction(p, input_layer_size, hidden_layer_size, num_labels, X, y, Lambda)
-#gradFunc = lambda p: nnCostFunction(p, input_layer_size, hidden_layer_size, num_labels, X, y, Lambda)[1]
-
 result = optimize.minimize(costFunc, initial_nn_params, method='TNC', jac=True, options=options)
 nn_params = result.x
 cost = result.fun
@@ -179,7 +170,7 @@ Theta1 = np.reshape(nn_params[:hidden_layer_size * (input_layer_size + 1)],
 Theta2 = np.reshape(nn_params[(hidden_layer_size * (input_layer_size + 1)):],
                     (num_labels, (hidden_layer_size + 1)))
 
-pred = predict(Theta1, Theta2, X)
+pred = prediction(Theta1, Theta2, X)
 
 accuracy = np.mean(pred == y) * 100
 print('Training Set Accuracy: %f\n'% accuracy)
