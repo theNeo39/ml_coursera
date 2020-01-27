@@ -18,89 +18,63 @@
 import numpy as np
 import scipy.io
 from sklearn import svm
-from collections import OrderedDict
-
 from processEmail import processEmail
 from emailFeatures import emailFeatures
 from getVocabList import getVocabList
+from collections import OrderedDict
 
 ## ==================== Part 1: Email Preprocessing ====================
-#  To use an SVM to classify emails into Spam v.s. Non-Spam, you first need
-#  to convert each email into a vector of features. In this part, you will
-#  implement the preprocessing steps for each email. You should
-#  complete the code in processEmail.m to produce a word indices vector
-#  for a given email.
-
-print 'Preprocessing sample email (emailSample1.txt)'
+print('Preprocessing sample email (emailSample1.txt)')
 
 # Extract Features
 file = open('emailSample1.txt', 'r')
 file_contents = file.readlines()
 word_indices  = processEmail(''.join(file_contents))
-
 # Print Stats
-print 'Word Indices: '
-print word_indices
-
-raw_input("Program paused. Press Enter to continue...")
+print('Word Indices: ')
+print(word_indices)
 
 ## ==================== Part 2: Feature Extraction ====================
 #  Now, you will convert each email into a vector of features in R^n.
 #  You should complete the code in emailFeatures.m to produce a feature
 #  vector for a given email.
-
-print 'Extracting features from sample email (emailSample1.txt)'
-
-# Extract Features
-file = open('emailSample1.txt')
-file_contents = file.readlines()
-word_indices = processEmail(''.join(file_contents))
+print('Extracting features from sample email (emailSample1.txt)')
 features = emailFeatures(word_indices)
 
 # Print Stats
-print 'Length of feature vector: %d'% features.size
-print 'Number of non-zero entries: %d'% sum(features > 0)
-
-raw_input("Program paused. Press Enter to continue...")
+print('Length of feature vector: %d'% features.size)
+print('Number of non-zero entries: %d'% sum(features > 0))
 
 ## =========== Part 3: Train Linear SVM for Spam Classification ========
 #  In this section, you will train a linear classifier to determine if an
 #  email is Spam or Not-Spam.
-
 # Load the Spam Email dataset
 # You will have X, y in your environment
-data = scipy.io.loadmat('spamTrain.mat')
-X = data['X']
-y = data['y'].flatten()
+dt = scipy.io.loadmat('spamTrain.mat')
+X = dt['X']
+y = dt['y'].flatten()
 
-print 'Training Linear SVM (Spam Classification)'
-print '(this may take 1 to 2 minutes) ...'
+print('Training Linear SVM (Spam Classification)')
 
-C = 0.1
-clf = svm.SVC(C=C, kernel='linear', tol=1e-3, max_iter=200)
+C =0.1
+clf = svm.SVC(C=C, kernel='linear')
 model = clf.fit(X, y)
+pred = model.predict(X)
 
-p = model.predict(X)
-
-print 'Training Accuracy: %f', np.mean(np.double(p == y)) * 100
+print('Training Accuracy: %f', np.mean(pred == y) * 100)
 
 ## =================== Part 4: Test Spam Classification ================
-#  After training the classifier, we can evaluate it on a test set. We have
-#  included a test set in spamTest.mat
 
-# Load the test dataset
-# You will have Xtest, ytest in your environment
-data = scipy.io.loadmat('spamTest.mat')
-Xtest = data['Xtest']
-ytest = data['ytest']
+dat = scipy.io.loadmat('spamTest.mat')
+Xtest = dat['Xtest']
+ytest = dat['ytest']
 
-print 'Evaluating the trained Linear SVM on a test set ...'
 
+print('Evaluating the trained Linear SVM on a test set ...')
 p = model.predict(Xtest)
+print('Test Accuracy: %f', np.mean(p == ytest) * 100)
 
-print 'Test Accuracy: %f', np. mean(np.double(p == ytest)) * 100
-
-
+"""
 ## ================= Part 5: Top Predictors of Spam ====================
 #  Since the model we are training is a linear SVM, we can inspect the
 #  weights learned by the model to understand better how it is determining
@@ -116,11 +90,9 @@ d = OrderedDict(t)
 idx = d.keys()
 weight = d.values()
 vocabList = getVocabList()
-
-print 'Top predictors of spam: '
+print('Top predictors of spam: ')
 for i in range(15):
-    print ' %-15s (%f)' %(vocabList[idx[i]], weight[i])
-
+    print(' %s %f' % (vocabList[idx[i]], weight[i]))
 print 'Program paused. Press enter to continue.'
 
 ## =================== Part 6: Try Your Own Emails =====================
@@ -145,5 +117,5 @@ x = emailFeatures(word_indices)
 p = model.predict(x)
 
 print 'Processed %s\n\nSpam Classification: %d' % (filename, p)
-print '(1 indicates spam, 0 indicates not spam)'
-
+print(1 indicates spam, 0 indicates not spam)
+"""

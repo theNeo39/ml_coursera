@@ -1,5 +1,4 @@
-from string import lower
-from porterStemmer import porterStemmer
+from PorterStemmer import PorterStemmer
 from getVocabList import getVocabList
 import re
 
@@ -27,12 +26,12 @@ def processEmail(email_contents):
 # email_contents = email_contents(hdrstart(1):end)
 
 # Lower case
-    email_contents = lower(email_contents)
+    email_contents = str.lower(email_contents)
 
 # Strip all HTML
 # Looks for any expression that starts with < and ends with > and replace
 # and does not have any < or > in the tag it with a space
-    rx = re.compile('<[^<>]+>|\n')
+    rx = re.compile('<[^<>]+>')
     email_contents = rx.sub(' ', email_contents)
 # Handle Numbers
 # Look for one or more characters between 0-9
@@ -52,73 +51,25 @@ def processEmail(email_contents):
 # Handle $ sign
     rx = re.compile('[$]+')
     email_contents = rx.sub('dollar ', email_contents)
+    
+    # get rid of any punctuation
+    email_contents = re.split('[ @$/#.-:&*+=\[\]?!(){},''">_<;%\n\r]', email_contents)
 
-# ========================== Tokenize Email ===========================
+    # remove any empty word string
+    email_contents = [word for word in email_contents if len(word) > 0]
+    
+    # Stem the email contents word by word
+    stemmer = PorterStemmer()
+    processed_email = []
+    for word in email_contents:
+        # Remove any remaining non alphanumeric characters in word
+        word = re.compile('[^a-zA-Z0-9]').sub('', word).strip()
+        word = stemmer.stem(word)
+        processed_email.append(word)
 
-# Output the email to screen as well
-    print '==== Processed Email ====\n'
-
-# Process file
-    l = 0
-
-# Remove any non alphanumeric characters
-    rx = re.compile('[^a-zA-Z0-9 ]')
-    email_contents = rx.sub('', email_contents).split()
-
-    for str in email_contents:
-
-        # Tokenize and also get rid of any punctuation
-        # str = re.split('[' + re.escape(' @$/#.-:&*+=[]?!(){},''">_<#')
-        #                                + chr(10) + chr(13) + ']', str)
-
-        # Stem the word
-        # (the porterStemmer sometimes has issues, so we use a try catch block)
-        try:
-            str = porterStemmer(str.strip())
-        except:
-            str = ''
+        if len(word) < 1:
             continue
-
-        # Skip the word if it is too short
-        if len(str) < 1:
-           continue
-
-        # Look up the word in the dictionary and add to word_indices if
-        # found
-        # ====================== YOUR CODE HERE ======================
-        # Instructions: Fill in this function to add the index of str to
-        #               word_indices if it is in the vocabulary. At this point
-        #               of the code, you have a stemmed word from the email in
-        #               the variable str. You should look up str in the
-        #               vocabulary list (vocabList). If a match exists, you
-        #               should add the index of the word to the word_indices
-        #               vector. Concretely, if str = 'action', then you should
-        #               look up the vocabulary list to find where in vocabList
-        #               'action' appears. For example, if vocabList{18} =
-        #               'action', then, you should add 18 to the word_indices
-        #               vector (e.g., word_indices = [word_indices  18] ).
-        #
-        # Note: vocabList{idx} returns a the word with index idx in the
-        #       vocabulary list.
-        #
-        # Note: You can use strcmp(str1, str2) to compare two strings (str1 and
-        #       str2). It will return 1 only if the two strings are equivalent.
-        #
-
-
-
-
-        # =============================================================
-
-        # Print to screen, ensuring that the output lines are not too long
-        if (l + len(str) + 1) > 78:
-            print str
-            l = 0
-        else:
-            print str,
-            l = l + len(str) + 1
-
-# Print footer
-    print '\n========================='
+        if word in vocabList:
+            word_indices.append(vocabList.index(word)+1)
     return word_indices
 

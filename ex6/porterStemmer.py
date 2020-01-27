@@ -1,47 +1,35 @@
-"""Porter Stemming Algorithm
-This is the Porter stemming algorithm, ported to Python from the
-version coded up in ANSI C by the author. It may be be regarded
-as canonical, in that it follows the algorithm presented in
-
-Porter, 1980, An algorithm for suffix stripping, Program, Vol. 14,
-no. 3, pp 130-137,
-
-only differing from it at the points maked --DEPARTURE-- below.
-
-See also http://www.tartarus.org/~martin/PorterStemmer
-
-The algorithm as described in the paper could be exactly replicated
-by adjusting the points of DEPARTURE, but this is barely necessary,
-because (a) the points of DEPARTURE are definitely improvements, and
-(b) no encoding of the Porter stemmer I have seen is anything like
-as exact as this version, even with the points of DEPARTURE!
-
-Vivake Gupta (v@nano.com)
-
-Release 1: January 2001
-
-Further adjustments by Santiago Bruno (bananabruno@gmail.com)
-to allow word input not restricted to one word per line, leading
-to:
-
-release 2: July 2008
-"""
-
-import sys
-
 class PorterStemmer:
-
+    """
+    Porter Stemming Algorithm
+    This is the Porter stemming algorithm, ported to Python from the
+    version coded up in ANSI C by the author. It may be be regarded
+    as canonical, in that it follows the algorithm presented in
+    Porter, 1980, An algorithm for suffix stripping, Program, Vol. 14,
+    no. 3, pp 130-137,
+    only differing from it at the points maked --DEPARTURE-- below.
+    See also http://www.tartarus.org/~martin/PorterStemmer
+    The algorithm as described in the paper could be exactly replicated
+    by adjusting the points of DEPARTURE, but this is barely necessary,
+    because (a) the points of DEPARTURE are definitely improvements, and
+    (b) no encoding of the Porter stemmer I have seen is anything like
+    as exact as this version, even with the points of DEPARTURE!
+    Vivake Gupta (v@nano.com)
+    Release 1: January 2001
+    Further adjustments by Santiago Bruno (bananabruno@gmail.com)
+    to allow word input not restricted to one word per line, leading
+    to:
+    release 2: July 2008
+    """
     def __init__(self):
-        """The main part of the stemming algorithm starts here.
+        """
+        The main part of the stemming algorithm starts here.
         b is a buffer holding a word to be stemmed. The letters are in b[k0],
         b[k0+1] ... ending at b[k]. In fact k0 = 0 in this demo program. k is
         readjusted downwards as the stemming progresses. Zero termination is
         not in fact used in the algorithm.
-
         Note that only lower case sequences are stemmed. Forcing to lower case
         should be done before stem(...) is called.
         """
-
         self.b = ""  # buffer for word to be stemmed
         self.k = 0
         self.k0 = 0
@@ -49,20 +37,20 @@ class PorterStemmer:
 
     def cons(self, i):
         """cons(i) is TRUE <=> b[i] is a consonant."""
-        if self.b[i] == 'a' or self.b[i] == 'e' or self.b[i] == 'i' or self.b[i] == 'o' or self.b[i] == 'u':
+        if self.b[i] in 'aeiou':
             return 0
         if self.b[i] == 'y':
             if i == self.k0:
                 return 1
             else:
-                return (not self.cons(i - 1))
+                return not self.cons(i - 1)
         return 1
 
     def m(self):
-        """m() measures the number of consonant sequences between k0 and j.
+        """
+        m() measures the number of consonant sequences between k0 and j.
         if c is a consonant sequence and v a vowel sequence, and <..>
         indicates arbitrary presence,
-
            <c><v>       gives 0
            <c>vc<v>     gives 1
            <c>vcvc<v>   gives 2
@@ -103,25 +91,25 @@ class PorterStemmer:
         return 0
 
     def doublec(self, j):
-        """doublec(j) is TRUE <=> j,(j-1) contain a double consonant."""
+        """ doublec(j) is TRUE <=> j,(j-1) contain a double consonant. """
         if j < (self.k0 + 1):
             return 0
-        if (self.b[j] != self.b[j-1]):
+        if self.b[j] != self.b[j-1]:
             return 0
         return self.cons(j)
 
     def cvc(self, i):
-        """cvc(i) is TRUE <=> i-2,i-1,i has the form consonant - vowel - consonant
+        """
+        cvc(i) is TRUE <=> i-2,i-1,i has the form consonant - vowel - consonant
         and also if the second c is not w,x or y. this is used when trying to
         restore an e at the end of a short  e.g.
-
            cav(e), lov(e), hop(e), crim(e), but
            snow, box, tray.
         """
         if i < (self.k0 + 2) or not self.cons(i) or self.cons(i-1) or not self.cons(i-2):
             return 0
         ch = self.b[i]
-        if ch == 'w' or ch == 'x' or ch == 'y':
+        if ch in 'wxy':
             return 0
         return 1
 
@@ -150,23 +138,19 @@ class PorterStemmer:
 
     def step1ab(self):
         """step1ab() gets rid of plurals and -ed or -ing. e.g.
-
            caresses  ->  caress
            ponies    ->  poni
            ties      ->  ti
            caress    ->  caress
            cats      ->  cat
-
            feed      ->  feed
            agreed    ->  agree
            disabled  ->  disable
-
            matting   ->  mat
            mating    ->  mate
            meeting   ->  meet
            milling   ->  mill
            messing   ->  mess
-
            meetings  ->  meet
         """
         if self.b[self.k] == 's':
@@ -181,20 +165,23 @@ class PorterStemmer:
                 self.k = self.k - 1
         elif (self.ends("ed") or self.ends("ing")) and self.vowelinstem():
             self.k = self.j
-            if self.ends("at"):   self.setto("ate")
-            elif self.ends("bl"): self.setto("ble")
-            elif self.ends("iz"): self.setto("ize")
+            if self.ends("at"):
+                self.setto("ate")
+            elif self.ends("bl"):
+                self.setto("ble")
+            elif self.ends("iz"):
+                self.setto("ize")
             elif self.doublec(self.k):
                 self.k = self.k - 1
                 ch = self.b[self.k]
-                if ch == 'l' or ch == 's' or ch == 'z':
-                    self.k = self.k + 1
-            elif (self.m() == 1 and self.cvc(self.k)):
+                if ch in 'lsz':
+                    self.k += 1
+            elif self.m() == 1 and self.cvc(self.k):
                 self.setto("e")
 
     def step1c(self):
         """step1c() turns terminal y to i when there is another vowel in the stem."""
-        if (self.ends("y") and self.vowelinstem()):
+        if self.ends("y") and self.vowelinstem():
             self.b = self.b[:self.k] + 'i' + self.b[self.k+1:]
 
     def step2(self):
@@ -312,7 +299,7 @@ class PorterStemmer:
         if self.b[self.k] == 'l' and self.doublec(self.k) and self.m() > 1:
             self.k = self.k -1
 
-    def stem(self, p, i, j):
+    def stem(self, p, i=0, j=None):
         """In stem(p,i,j), p is a char pointer, and the string to be stemmed
         is from p[i] to p[j] inclusive. Typically i is zero and j is the
         offset to the last character of a string, (p[j+1] == '\0'). The
@@ -323,10 +310,10 @@ class PorterStemmer:
         """
         # copy the parameters into statics
         self.b = p
-        self.k = j
+        self.k = j or len(p) - 1
         self.k0 = i
         if self.k <= self.k0 + 1:
-            return self.b # --DEPARTURE--
+            return self.b  # --DEPARTURE--
 
         # With this line, strings of length 1 or 2 don't go through the
         # stemming process, although no mention is made of this in the
@@ -340,8 +327,3 @@ class PorterStemmer:
         self.step4()
         self.step5()
         return self.b[self.k0:self.k+1]
-
-
-def porterStemmer(word):
-    p = PorterStemmer()
-    return p.stem(word, 0, len(word)-1)
