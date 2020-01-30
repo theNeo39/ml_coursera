@@ -77,7 +77,6 @@ X = data['X']
 K = 3
 max_iters = 10
 
-
 initial_centroids = np.array([[3, 3], [6, 2], [8, 5]])
 centroids, idx = runkMeans(X, initial_centroids, max_iters, True)
 print('K-Means Done.')
