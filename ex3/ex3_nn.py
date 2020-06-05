@@ -11,12 +11,7 @@ hidden_layer_size = 25   # 25 hidden units
 num_labels = 10          # 10 labels   
                           
 
-## =========== Part 1: Loading and Visualizing Data =============
-#  We start the exercise by first loading and visualizing the dataset. 
-#  You will be working with a dataset that contains handwritten digits.
-#
 
-# Load Training Data
 print('Loading and Visualizing Data ...')
 
 data = scipy.io.loadmat('ex3data1.mat')
@@ -31,10 +26,6 @@ sel = sel[0:100]
 displayData(X[sel,:])
 
 
-## ================ Part 2: Loading Pameters ================
-# In this part of the exercise, we load some pre-initialized 
-# neural network parameters.
-
 print('Loading Saved Neural Network Parameters ...')
 
 # Load the weights into variables Theta1 and Theta2
@@ -42,11 +33,6 @@ weights= scipy.io.loadmat('ex3weights.mat')
 Theta1 = weights['Theta1']
 Theta2 = weights['Theta2']
 
-## ================= Part 3: Implement Predict =================
-#  After training the neural network, we would like to use it to predict
-#  the labels. You will now implement the "predict" function to use the
-#  neural network to predict the labels of the training set. This lets
-#  you compute the training set accuracy.
 pred = predict(Theta1, Theta2, X)
 pred=(np.asarray(pred)).reshape(-1,1)
 

@@ -15,7 +15,7 @@ def gradientDescent(X, y, theta, alpha, num_iters):
     
     for i in range(num_iters):
         
-        cost=np.subtract(np.dot(theta.T,X.T).T,y)
+        cost=np.subtract(np.dot(X,theta),y)
         t0=theta[0]-((np.sum(cost)*alpha)/m)
         t1=theta[1]-((np.sum(cost*X[:,1])*alpha)/m)
         theta[0]=t0
